@@ -6,7 +6,7 @@
     El elemento yyin debe declararse como extern pues el mismo esta declarado inicialmente en el programa YACC y de lo contrario
     obtendríamos un error porque estaríamos redefiniendo el elemento.
 */
-extern FILE *yyin; // wat
+extern FILE *yyin;
 void yyerror(const char *str);
 
 int stringLength(char* str);

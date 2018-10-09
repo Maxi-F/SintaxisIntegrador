@@ -66,14 +66,13 @@ void Asignar(REG_EXPRESION izq, REG_EXPRESION der);
 /***************************Programa Principal************************/
 int main(int argc, char * argv[])
 {
-  TOKEN tok;
   char nomArchi[TAMNOM];
   int l;
   /***************************Se abre el Archivo Fuente******************/
   // verifica errores posibles
   if ( argc == 1 ) {
-    printf("Debe ingresar el nombre del archivo fuente (en lenguaje Micro) en la linea de
-    comandos\n"); return -1; } // no puso nombre de archivo fuente
+    printf("Debe ingresar el nombre del archivo fuente (en lenguaje Micro) en la linea de comandos\n");
+    return -1; } // no puso nombre de archivo fuente
   if ( argc != 2 ) {
     printf("Numero incorrecto de argumentos\n"); return -1; } //los argumentos deben ser 2
   strcpy(nomArchi, argv[1]);
@@ -123,7 +122,7 @@ void ListaSentencias(void) {
 
 void Sentencia(void) {
   TOKEN tok = ProximoToken();
-  REG_EXPRESION izq, der;
+  REG_EXPRESION izq, der, *presul;
   //typedef struct{ TOKEN clase; char nombre[TAMLEX]; int valor; } REG_EXPRESION;
   switch ( tok ) {
     case ID : /* <sentencia> -> ID := <expresion> #asignar ; */
@@ -141,9 +140,36 @@ void Sentencia(void) {
       Match(PUNTOYCOMA);
       break;
       case ESCRIBIR : /* <sentencia> -> void Identificador(REG_EXPRESION * presul) <identificador> -> ID #procesar_id */
-      Match(ID);
-      *presul = ProcesarId(); //rutina semantica
+      Match(ESCRIBIR);
+      Match(PARENIZQUIERDO);
+      ListaExpresiones();
+      Match(PARENDERECHO);
+      Match(PUNTOYCOMA);
+      break;
+    default : return;
+  }
 }
+
+void ListaIdentificadores(void) {
+  /* <listaIdentificadores> -> <identificador> #leer_id {COMA <identificador>
+  #leer_id} */
+  TOKEN t;
+  REG_EXPRESION reg;
+  Identificador(&reg);
+  Leer(reg);
+  for ( t = ProximoToken(); t == COMA; t = ProximoToken() ) {
+    Match(COMA);
+    Identificador(&reg);
+    Leer(reg);
+  }
+}
+
+void Identificador(REG_EXPRESION * presul) {
+  /* <identificador> -> ID #procesar_id */
+  Match(ID);
+  *presul = ProcesarId();
+}
+
 void ListaExpresiones(void) {
 /* <listaExpresiones> -> <expresion> #escribir_exp {COMA <expresion> #escribir_exp} */
   TOKEN t;
@@ -403,7 +429,6 @@ int estadoFinal(int e){
 if ( e == 0 || e == 1 || e == 3 || e == 11 || e == 14 ) return 0;
 return 1;
 }
-13
 int columna(int c){
 if ( isalpha(c) ) return 0;
 if ( isdigit(c) ) return 1;
