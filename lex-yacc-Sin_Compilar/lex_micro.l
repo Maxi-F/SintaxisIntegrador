@@ -1,14 +1,13 @@
 %{
-//Se incluyen los header correspondientes para poder usar ciertas funciones y reconocer los TOKEN.
 #include <string.h>
-#include "y.tab.h"
+#include "yacc_micro.tab.h"
 %}
 
 
-%{ 
+%{
     /*
         Lo siguiente son las declaraciones léxicas de Micro.
-        
+
         %% separa las definiciones de LEX.
         %{ %} se utiliza para escribir código de C que será copiado literalmente.
     */
@@ -22,7 +21,7 @@ ASIGNACION  :=
 
 %%
 
-[(),;]                          return yytext[0];
+[(),;]                          return yytext[0]; //devuelve el primer caracter del buffer
 inicio                          return INICIO;
 fin                             return FIN;
 leer                            return LEER;
@@ -30,11 +29,10 @@ escribir                        return ESCRIBIR;
 {LETRA}({LETRA}|{DIGITO})*      {
                                     //Almacenamos el nombre del identificador reconocido para luego poder acceder al mismo desde YACC.
                                     //Si no se utiliza strdup() el puntero de yytext será copiado en yylval.identificador.
-                                    yylval.identificador = strdup(yytext); 
+                                    yylval.identificador = strdup(yytext);
                                     return IDENTIFICADOR; //Retornamos el token IDENTIFICADOR para YACC.
                                 }
 {DIGITO}{DIGITO}*               return CONSTANTE;
 {OPERADOR_ADITIVO}              return OPERADOR_ADITIVO;
 {ASIGNACION}                    return ASIGNACION;
 [ \t\n]+                        /* ignorar espacios y enter, no nos importa analizarlos. */;
-

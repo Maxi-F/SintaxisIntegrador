@@ -57,7 +57,7 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 22 "yacc_micro.y"
+#line 21 "yacc_micro.y"
 char* identificador;
 
 

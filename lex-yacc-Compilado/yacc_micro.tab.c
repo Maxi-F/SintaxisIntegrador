@@ -72,12 +72,11 @@
 
 #include <stdio.h>
 #define VARMAXLENGTH 32
-
 /*
     El elemento yyin debe declararse como extern pues el mismo esta declarado inicialmente en el programa YACC y de lo contrario
     obtendríamos un error porque estaríamos redefiniendo el elemento.
 */
-extern FILE *yyin; // wat
+extern FILE *yyin;
 void yyerror(const char *str);
 
 int stringLength(char* str);
@@ -85,7 +84,7 @@ int identificadorValido(char* id);
 int yywrap();
 
 /* Line 189 of yacc.c  */
-#line 17 "yacc_micro.y"
+#line 16 "yacc_micro.y"
 
 /*
     Lo siguiente son las declaraciones de TOKEN para YACC. Las mismas son convertidas a INT para poder ser retornadas en LEX.
@@ -93,7 +92,7 @@ int yywrap();
 
 
 /* Line 189 of yacc.c  */
-#line 97 "yacc_micro.tab.c"
+#line 96 "yacc_micro.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -138,12 +137,12 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 22 "yacc_micro.y"
+#line 21 "yacc_micro.y"
 char* identificador;
 
 
 /* Line 214 of yacc.c  */
-#line 147 "yacc_micro.tab.c"
+#line 146 "yacc_micro.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -155,7 +154,7 @@ char* identificador;
 
 
 /* Line 264 of yacc.c  */
-#line 159 "yacc_micro.tab.c"
+#line 158 "yacc_micro.tab.c"
 
 #ifdef short
 # undef short
@@ -443,8 +442,8 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    30,    30,    34,    35,    37,    45,    46,    48,    49,
-      54,    55,    57,    58,    60,    65,    66
+       0,    27,    27,    31,    32,    34,    42,    43,    45,    46,
+      51,    52,    54,    55,    57,    62,    63
 };
 #endif
 
@@ -1361,7 +1360,7 @@ yyreduce:
         case 2:
 
 /* Line 1455 of yacc.c  */
-#line 30 "yacc_micro.y"
+#line 27 "yacc_micro.y"
     {
                                                     printf("Compilado correctamente!\n");
                                                 ;}
@@ -1370,18 +1369,18 @@ yyreduce:
   case 4:
 
 /* Line 1455 of yacc.c  */
-#line 35 "yacc_micro.y"
+#line 32 "yacc_micro.y"
     {;;}
     break;
 
   case 5:
 
 /* Line 1455 of yacc.c  */
-#line 37 "yacc_micro.y"
+#line 34 "yacc_micro.y"
     {
                                                                 //Rutina semántica: Comprobar largo de variable.
                                                                 if(identificadorValido((yyvsp[(1) - (4)].identificador)) == 0)
-                                                                    YYABORT; // Cambiar para que acepte, pero que tome solo los primeros 32 caracteres
+                                                                    YYABORT;
 
                                                                 // YYABORT es un macro que va a cortar la ejecución de YACC si el identificador no es válido.
                                                             ;}
@@ -1390,55 +1389,55 @@ yyreduce:
   case 7:
 
 /* Line 1455 of yacc.c  */
-#line 46 "yacc_micro.y"
+#line 43 "yacc_micro.y"
     {;;}
     break;
 
   case 9:
 
 /* Line 1455 of yacc.c  */
-#line 49 "yacc_micro.y"
+#line 46 "yacc_micro.y"
     {
                                                                         if(identificadorValido((yyvsp[(1) - (3)].identificador)) == 0)
-                                                                            YYABORT; // Cambiar para que acepte, pero que tome solo los primeros 32 caracteres
+                                                                            YYABORT;
                                                                     ;}
     break;
 
   case 11:
 
 /* Line 1455 of yacc.c  */
-#line 55 "yacc_micro.y"
+#line 52 "yacc_micro.y"
     {;;}
     break;
 
   case 13:
 
 /* Line 1455 of yacc.c  */
-#line 58 "yacc_micro.y"
+#line 55 "yacc_micro.y"
     {;;}
     break;
 
   case 14:
 
 /* Line 1455 of yacc.c  */
-#line 60 "yacc_micro.y"
+#line 57 "yacc_micro.y"
     {
                                                 if(identificadorValido((yyvsp[(1) - (1)].identificador)) == 0)
-                                                    YYABORT; // Cambiar para que acepte, pero que tome solo los primeros 32 caracteres
+                                                    YYABORT;
                                             ;}
     break;
 
   case 16:
 
 /* Line 1455 of yacc.c  */
-#line 66 "yacc_micro.y"
+#line 63 "yacc_micro.y"
     { ; ;}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1442 "yacc_micro.tab.c"
+#line 1441 "yacc_micro.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1650,7 +1649,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 68 "yacc_micro.y"
+#line 65 "yacc_micro.y"
 
 
 int identificadorValido(char* id)
@@ -1665,7 +1664,7 @@ int identificadorValido(char* id)
 
     free(id); // Se debe liberar la memoria asignada en LEX con strdup().
     return 1;
-} // Cambiar para que acepte, pero que tome solo los primeros 32 caracteres
+}
 
 int stringLength(char* str)
 {
@@ -1684,21 +1683,26 @@ int yywrap()
         return 1;
 }
 
-//Uso: ./compilador <source_micro>.mk
+//Uso: ./compilador <source_micro>.m
 int main(int argc, char* argv[]) {
 
-    //Permitimos leer archivos completos.
-    if (argc == 2)
-    {
-    	FILE *source = fopen(argv[1], "r");
-
-    	if (!source) {
-    		printf("Imposible abrir el archivo %s.\n", argv[1]);
-    		return -1;
-    	}
-
-    	yyin = source;
-    }
+  char nomArchi[33];
+  int l;
+  /***************************Se abre el Archivo Fuente******************/
+  // verifica errores posibles
+  if ( argc == 1 ) {
+      printf("Debe ingresar el nombre del archivo fuente (en lenguaje Micro) en la linea de comandos\n");
+      return -1; } // no puso nombre de archivo fuente
+    if ( argc != 2 ) {
+      printf("Numero incorrecto de argumentos\n"); return -1; } //los argumentos deben ser 2
+      strcpy(nomArchi, argv[1]);
+      l = strlen(nomArchi);
+    if ( l > 33 ) {
+      printf("Nombre incorrecto del Archivo Fuente\n"); return -1; }
+    if ( nomArchi[l-1] != 'm' || nomArchi[l-2] != '.' ) {
+      printf("Nombre incorrecto del Archivo Fuente\n"); return -1; }  // requiere para compilar un archivo de extensión.m archivo.m
+    if ( (yyin = fopen(nomArchi, "r") ) == NULL ) {
+      printf("No se pudo abrir archivo fuente\n"); return -1;} //no pudo abrir archivo
 
     yyparse();
     return 0;

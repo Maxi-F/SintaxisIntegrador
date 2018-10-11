@@ -1,12 +1,11 @@
 %{
 #include <stdio.h>
 #define VARMAXLENGTH 32
-
 /*
     El elemento yyin debe declararse como extern pues el mismo esta declarado inicialmente en el programa YACC y de lo contrario
     obtendríamos un error porque estaríamos redefiniendo el elemento.
 */
-extern FILE *yyin; // wat
+extern FILE *yyin;
 void yyerror(const char *str);
 
 int stringLength(char* str);
@@ -25,8 +24,6 @@ int yywrap();
 
 %%
 
-//agregar objetivo()
-
 programa        : INICIO listaSentencias FIN    {
                                                     printf("Compilado correctamente!\n");
                                                 };
@@ -37,7 +34,7 @@ listaSentencias : sentencia listaSentencias
 sentencia       : IDENTIFICADOR ASIGNACION expresion ';'    {
                                                                 //Rutina semántica: Comprobar largo de variable.
                                                                 if(identificadorValido($1) == 0)
-                                                                    YYABORT; // Cambiar para que acepte, pero que tome solo los primeros 32 caracteres
+                                                                    YYABORT;
 
                                                                 // YYABORT es un macro que va a cortar la ejecución de YACC si el identificador no es válido.
                                                             };
@@ -48,7 +45,7 @@ sentencia       : LEER '(' listaIdentificadores ')' ';'
 listaIdentificadores    : IDENTIFICADOR
                         | IDENTIFICADOR ',' listaIdentificadores    {
                                                                         if(identificadorValido($1) == 0)
-                                                                            YYABORT; // Cambiar para que acepte, pero que tome solo los primeros 32 caracteres
+                                                                            YYABORT;
                                                                     };
 
 listaExpresiones        : expresion
@@ -59,7 +56,7 @@ expresion               : primaria
 
 primaria                : IDENTIFICADOR     {
                                                 if(identificadorValido($1) == 0)
-                                                    YYABORT; // Cambiar para que acepte, pero que tome solo los primeros 32 caracteres
+                                                    YYABORT;
                                             };
 
 primaria                :   CONSTANTE
@@ -79,7 +76,7 @@ int identificadorValido(char* id)
 
     free(id); // Se debe liberar la memoria asignada en LEX con strdup().
     return 1;
-} // Cambiar para que acepte, pero que tome solo los primeros 32 caracteres
+}
 
 int stringLength(char* str)
 {
@@ -98,21 +95,26 @@ int yywrap()
         return 1;
 }
 
-//Uso: ./compilador <source_micro>.mk
+//Uso: ./compilador <source_micro>.m
 int main(int argc, char* argv[]) {
 
-    //Permitimos leer archivos completos.
-    if (argc == 2)
-    {
-    	FILE *source = fopen(argv[1], "r");
-
-    	if (!source) {
-    		printf("Imposible abrir el archivo %s.\n", argv[1]);
-    		return -1;
-    	}
-
-    	yyin = source;
-    }
+  char nomArchi[33];
+  int l;
+  /***************************Se abre el Archivo Fuente******************/
+  // verifica errores posibles
+  if ( argc == 1 ) {
+      printf("Debe ingresar el nombre del archivo fuente (en lenguaje Micro) en la linea de comandos\n");
+      return -1; } // no puso nombre de archivo fuente
+    if ( argc != 2 ) {
+      printf("Numero incorrecto de argumentos\n"); return -1; } //los argumentos deben ser 2
+      strcpy(nomArchi, argv[1]);
+      l = strlen(nomArchi);
+    if ( l > 33 ) {
+      printf("Nombre incorrecto del Archivo Fuente\n"); return -1; }
+    if ( nomArchi[l-1] != 'm' || nomArchi[l-2] != '.' ) {
+      printf("Nombre incorrecto del Archivo Fuente\n"); return -1; }  // requiere para compilar un archivo de extensión.m archivo.m
+    if ( (yyin = fopen(nomArchi, "r") ) == NULL ) {
+      printf("No se pudo abrir archivo fuente\n"); return -1;} //no pudo abrir archivo
 
     yyparse();
     return 0;
